@@ -20,13 +20,13 @@ const levels = [
     },
     {
         title: "Level 1",
-        description: "Find the missing number: 1, 4, 9, 16, 25, ?. Each number follows a hidden operation based on its index.",
-        rawAnswer: "144",
+        description: "Find the missing number: 1, 4, 36, 576, ?. Each number follows a hidden operation based on its index.",
+        rawAnswer: "14,400",
         hints: ["Hint 1: Think about squares.", "Hint 2: Multiply the square by the previous square."]
     },
     {
         title: "Level 2",
-        description: "Input 'START' to receive a cipher key. Use it to encrypt 'THE END' and find the hidden message.",
+        description: "Use 'START' as a cipher key. Use it to encrypt 'THE END' and find the hidden message.",
         rawAnswer: "HIDDEN",
         hints: ["Hint 1: Substitute letters dynamically.", "Hint 2: Reverse-engineer the encryption."]
     },
