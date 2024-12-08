@@ -1,42 +1,51 @@
-// Levels defined without encoding the answers directly
+// Helper functions for Base64 encoding/decoding with ASCII characters only
+function encodeBase64(str) {
+    return btoa(unescape(encodeURIComponent(str)));
+}
+
+function decodeBase64(str) {
+    return decodeURIComponent(escape(atob(str)));
+}
+
+// Levels with selective encoding (non-ASCII answers left unencoded)
 const levels = [
     {
         title: "Level 0",
         description: "What is my full name and date of birth (Format X X X X X, XX/XX/XX)?",
-        rawAnswer: "Godlove Theo Wognoin Kounou, 03/03/03", // Raw answer
+        rawAnswer: "Godlove Olade Wognoin Kounou, 03/03/03",
         hints: [
             "Hint 1: 4 names, capitalize the first letter, order matters",
-            "Hint 2: Really nigga"
+            "Hint 2: Really *side eye*"
         ]
     },
     {
         title: "Level 1",
         description: "Find the missing number: 1, 4, 9, 16, 25, ?. Each number follows a hidden operation based on its index.",
-        rawAnswer: "144", // Raw answer
+        rawAnswer: "144",
         hints: ["Hint 1: Think about squares.", "Hint 2: Multiply the square by the previous square."]
     },
     {
         title: "Level 2",
         description: "Input 'START' to receive a cipher key. Use it to encrypt 'THE END' and find the hidden message.",
-        rawAnswer: "HIDDEN", // Raw answer
+        rawAnswer: "HIDDEN",
         hints: ["Hint 1: Substitute letters dynamically.", "Hint 2: Reverse-engineer the encryption."]
     },
     {
         title: "Level 3",
         description: "What comes next? The symbols follow a pattern that changes with the current hour.",
-        rawAnswer: "🔺", // Raw answer
+        rawAnswer: "🔺", // Non-ASCII, left unencoded
         hints: ["Hint 1: Look at the current hour.", "Hint 2: Match symbols to their alternating order."]
     },
     {
         title: "Level 4",
         description: "Decode this nested cryptographic challenge: U29sdmUgdGhpcyBlbmNvZGU=",
-        rawAnswer: "SUCCESS", // Raw answer
+        rawAnswer: "SUCCESS",
         hints: ["Hint 1: Use Base64 decoding first.", "Hint 2: Apply Caesar cipher after decoding."]
     },
     {
         title: "Level 5",
         description: "From the secrets of these levels, a truth is revealed. Combine the numbers, patterns, and meanings you've learned so far to find me. What am I?",
-        rawAnswer: "SECRET144🔺", // Raw answer
+        rawAnswer: "SECRET144🔺", // Mixed ASCII and non-ASCII
         hints: [
             "Hint 1: Add the numeric answer from Level 1.",
             "Hint 2: Include the symbolic answer from Level 3 and the keyword from Level 2."
@@ -47,9 +56,15 @@ const levels = [
 let currentLevel = 0;
 const masterKey = "UltimateKey2024";
 
-// Encode all answers dynamically on startup
+// Encode only ASCII answers dynamically on startup
 levels.forEach((level) => {
-    level.answer = btoa(level.rawAnswer); // Encode the raw answer
+    if (!/[^ -~]/.test(level.rawAnswer)) {
+        // Encode if the answer contains only ASCII characters
+        level.answer = encodeBase64(level.rawAnswer);
+    } else {
+        // Leave non-ASCII answers as they are
+        level.answer = level.rawAnswer;
+    }
 });
 
 document.getElementById("start-button").addEventListener("click", () => {
@@ -62,8 +77,9 @@ document.getElementById("submit-button").addEventListener("click", () => {
     const userInput = document.getElementById("answer-input").value.trim();
     const feedback = document.getElementById("feedback");
 
-    // Decode the answer for comparison
-    const decodedAnswer = atob(levels[currentLevel].answer);
+    // Decode or use plain answer for comparison
+    const level = levels[currentLevel];
+    const decodedAnswer = /[^ -~]/.test(level.rawAnswer) ? level.rawAnswer : decodeBase64(level.answer);
 
     if (userInput === masterKey) {
         showEndScreen();
