@@ -138,5 +138,5 @@ function generatePattern(hour) {
 function showEndScreen() {
     document.getElementById("game-screen").classList.remove("active");
     document.getElementById("end-screen").classList.add("active");
-    document.getElementById("bible-verse").textContent = "Placeholder for Bible verse here";
+    document.getElementById("bible-verse").textContent = "1 John 4:8";
 }
