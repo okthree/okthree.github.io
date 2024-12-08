@@ -1,8 +1,9 @@
+// Levels defined without encoding the answers directly
 const levels = [
     {
         title: "Level 0",
         description: "What is my full name and date of birth (Format X X X X X, XX/XX/XX)?",
-        answer: btoa("Godlove Theo Wognoin Kounou, 03/03/03"), // Encoded answer
+        rawAnswer: "Godlove Theo Wognoin Kounou, 03/03/03", // Raw answer
         hints: [
             "Hint 1: 4 names, capitalize the first letter, order matters",
             "Hint 2: Really nigga"
@@ -11,31 +12,31 @@ const levels = [
     {
         title: "Level 1",
         description: "Find the missing number: 1, 4, 9, 16, 25, ?. Each number follows a hidden operation based on its index.",
-        answer: btoa("144"), // Encoded answer
+        rawAnswer: "144", // Raw answer
         hints: ["Hint 1: Think about squares.", "Hint 2: Multiply the square by the previous square."]
     },
     {
         title: "Level 2",
         description: "Input 'START' to receive a cipher key. Use it to encrypt 'THE END' and find the hidden message.",
-        answer: btoa("HIDDEN"), // Encoded answer
+        rawAnswer: "HIDDEN", // Raw answer
         hints: ["Hint 1: Substitute letters dynamically.", "Hint 2: Reverse-engineer the encryption."]
     },
     {
         title: "Level 3",
         description: "What comes next? The symbols follow a pattern that changes with the current hour.",
-        answer: btoa("🔺"), // Encoded answer
+        rawAnswer: "🔺", // Raw answer
         hints: ["Hint 1: Look at the current hour.", "Hint 2: Match symbols to their alternating order."]
     },
     {
         title: "Level 4",
         description: "Decode this nested cryptographic challenge: U29sdmUgdGhpcyBlbmNvZGU=",
-        answer: btoa("SUCCESS"), // Encoded answer
+        rawAnswer: "SUCCESS", // Raw answer
         hints: ["Hint 1: Use Base64 decoding first.", "Hint 2: Apply Caesar cipher after decoding."]
     },
     {
         title: "Level 5",
         description: "From the secrets of these levels, a truth is revealed. Combine the numbers, patterns, and meanings you've learned so far to find me. What am I?",
-        answer: btoa("SECRET144🔺"), // Encoded answer
+        rawAnswer: "SECRET144🔺", // Raw answer
         hints: [
             "Hint 1: Add the numeric answer from Level 1.",
             "Hint 2: Include the symbolic answer from Level 3 and the keyword from Level 2."
@@ -45,6 +46,11 @@ const levels = [
 
 let currentLevel = 0;
 const masterKey = "UltimateKey2024";
+
+// Encode all answers dynamically on startup
+levels.forEach((level) => {
+    level.answer = btoa(level.rawAnswer); // Encode the raw answer
+});
 
 document.getElementById("start-button").addEventListener("click", () => {
     document.getElementById("intro-screen").classList.remove("active");
@@ -116,5 +122,5 @@ function generatePattern(hour) {
 function showEndScreen() {
     document.getElementById("game-screen").classList.remove("active");
     document.getElementById("end-screen").classList.add("active");
-    document.getElementById("bible-verse").textContent = "1 John 4:8 (Look up the verse)";
+    document.getElementById("bible-verse").textContent = "Placeholder for Bible verse here";
 }
